@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ferovi</title>
+    <partial name="_Resources" />
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Navbar -->
+        @await Component.InvokeAsync("Navbar")
+
+        <!-- Main Sidebar Container -->
+        @await Component.InvokeAsync("MainSidebar")
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+
+        <!-- Footer -->
+        @await Component.InvokeAsync("Footer")
+
+        <!-- Control Sidebar -->
+        @await Component.InvokeAsync("ControlSidebar")
+    </div>
+</body>
+</html>
