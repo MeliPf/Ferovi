@@ -10,6 +10,7 @@ namespace Ferovi.Models.VM
         public string Enlace { get; set; }
         public string Icono { get; set; }
         public int Nivel { get; set; }
+        public int IdMenuPadre { get; set; }
         public List<MenuPrincipalViewModel> Submenu { get; set; } = [];
     }
 }

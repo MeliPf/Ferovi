@@ -15,33 +15,37 @@ public partial class FeroviContext : DbContext
 
     public virtual DbSet<Iconos> Iconos { get; set; }
 
-    public virtual DbSet<MenuPrincipal> MenuPrincipal { get; set; }
-
-    public virtual DbSet<RegistroAcceso> RegistroAcceso { get; set; }
+    public virtual DbSet<MenusPrincipales> MenusPrincipales { get; set; }
 
     public virtual DbSet<Roles> Roles { get; set; }
 
     public virtual DbSet<Usuarios> Usuarios { get; set; }
 
+    public virtual DbSet<UsuariosHistorialesAccesos> UsuariosHistorialesAccesos { get; set; }
+
     public virtual DbSet<Usuarios_Roles> Usuarios_Roles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<MenuPrincipal>(entity =>
+        modelBuilder.Entity<MenusPrincipales>(entity =>
         {
-            entity.HasOne(d => d.IdIconoNavigation).WithMany(p => p.MenuPrincipal).HasConstraintName("FK_MenuPrincipal_Iconos");
-        });
+            entity.HasKey(e => e.Id).HasName("PK_MenuPrincipal");
 
-        modelBuilder.Entity<RegistroAcceso>(entity =>
-        {
-            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.RegistroAcceso)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_RegistroAcceso_Usuarios");
+            entity.HasOne(d => d.IdIconoNavigation).WithMany(p => p.MenusPrincipales).HasConstraintName("FK_MenuPrincipal_Iconos");
         });
 
         modelBuilder.Entity<Usuarios>(entity =>
         {
             entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(getdate())");
+        });
+
+        modelBuilder.Entity<UsuariosHistorialesAccesos>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_RegistroAcceso");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.UsuariosHistorialesAccesos)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RegistroAcceso_Usuarios");
         });
 
         modelBuilder.Entity<Usuarios_Roles>(entity =>

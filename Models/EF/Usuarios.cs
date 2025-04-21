@@ -42,7 +42,7 @@ public partial class Usuarios
     public DateTime FechaCreacion { get; set; }
 
     [InverseProperty("IdUsuarioNavigation")]
-    public virtual ICollection<RegistroAcceso> RegistroAcceso { get; set; } = new List<RegistroAcceso>();
+    public virtual ICollection<UsuariosHistorialesAccesos> UsuariosHistorialesAccesos { get; set; } = new List<UsuariosHistorialesAccesos>();
 
     [InverseProperty("IdUsuarioNavigation")]
     public virtual ICollection<Usuarios_Roles> Usuarios_Roles { get; set; } = new List<Usuarios_Roles>();

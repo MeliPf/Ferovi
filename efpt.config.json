@@ -19,11 +19,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[Plat].[MenuPrincipal]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[Plat].[RegistroAcceso]",
+         "Name": "[Plat].[MenusPrincipales]",
          "ObjectType": 0
       },
       {
@@ -36,6 +32,10 @@
       },
       {
          "Name": "[Plat].[Usuarios_Roles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[Plat].[UsuariosHistorialesAccesos]",
          "ObjectType": 0
       }
    ],

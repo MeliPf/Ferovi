@@ -25,5 +25,5 @@ public partial class Iconos
     public string Paquete { get; set; }
 
     [InverseProperty("IdIconoNavigation")]
-    public virtual ICollection<MenuPrincipal> MenuPrincipal { get; set; } = new List<MenuPrincipal>();
+    public virtual ICollection<MenusPrincipales> MenusPrincipales { get; set; } = new List<MenusPrincipales>();
 }

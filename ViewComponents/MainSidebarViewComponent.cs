@@ -1,17 +1,18 @@
-﻿using Ferovi.Models.Services;
+﻿using Ferovi.Models.Services.Interfaces;
+using Ferovi.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferovi.ViewComponents
 {
-    public class MainSidebarViewComponent : ViewComponent
+    public class MainSidebarViewComponent(IMenuPrincipalService servicioMenuPrincipal) : ViewComponent
     {
+        private readonly IMenuPrincipalService _servicioMenuPrincipal = servicioMenuPrincipal;
+
         public IViewComponentResult Invoke()
         {
-            PlatformService platformService = new();
+            List<MenuPrincipalViewModel> menuPrincipal = _servicioMenuPrincipal.ObtenerMenuPrincipal();
 
-            var a = platformService.EstructurarMenu();
-
-            return View(a);
+            return View(menuPrincipal);
         }
     }
 }

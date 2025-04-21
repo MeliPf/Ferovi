@@ -33,35 +33,35 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar nav-compact flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
                 @foreach (var menuPrincipal in Model)
                 {
-                    if (menuPrincipal.Nivel == 1 && menuPrincipal.Enlace.Length == 0)
+                    if (menuPrincipal.Nivel == 1 && (menuPrincipal.Enlace?.Length ?? 0) == 0)
                     {
                         <li class="nav-item">
-                            <a class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas @menuPrincipal.Icono"></i>
-                                <p>
-                                    @menuPrincipal.Nombre
-                                </p>
+                                <p>@menuPrincipal.Nombre</p>
+                                <i class="right fas fa-angle-left"></i>
                             </a>
                             <ul class="nav nav-treeview">
-                                @foreach (var submenuPrincipal in menuPrincipal.Submenu)
+                                @foreach (var submenuPrimario in menuPrincipal.Submenu)
                                 {
-                                    if (submenuPrincipal.Nivel == 2 && submenuPrincipal.Enlace.Length == 0)
+                                    if (submenuPrimario.Nivel == 2 && (submenuPrimario.Enlace?.Length ?? 0) == 0)
                                     {
                                         <li class="nav-item">
-                                            <a class="nav-link active">
-                                                <i class="nav-icon fas @menuPrincipal.Icono"></i>
-                                                <p>@submenuPrincipal.Nombre</p>
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon fas @submenuPrimario.Icono"></i>
+                                                <p>@submenuPrimario.Nombre</p>
+                                                <i class="right fas fa-angle-left"></i>
                                             </a>
                                             <ul class="nav nav-treeview">
-                                                @foreach (var submenuSecundario in submenuPrincipal.Submenu)
+                                                @foreach (var submenuSecundario in submenuPrimario.Submenu)
                                                 {
                                                     <li class="nav-item">
-                                                        <a href="@submenuSecundario.Enlace" class="nav-link active">
+                                                        <a href="@submenuSecundario.Enlace" class="nav-link">
                                                             <i class="nav-icon fas @submenuSecundario.Icono"></i>
                                                             <p>@submenuSecundario.Nombre</p>
                                                         </a>
@@ -70,12 +70,12 @@
                                             </ul>
                                         </li>
                                     }
-                                    else if (submenuPrincipal.Nivel == 2 && submenuPrincipal.Enlace.Length > 0)
+                                    else if (submenuPrimario.Nivel == 2 && (submenuPrimario.Enlace?.Length ?? 0) > 0)
                                     {
                                         <li class="nav-item">
-                                            <a href="@submenuPrincipal.Enlace" class="nav-link">
-                                                <i class="nav-icon fas @menuPrincipal.Icono"></i>
-                                                <p>@submenuPrincipal.Nombre</p>
+                                            <a href="@submenuPrimario.Enlace" class="nav-link">
+                                                <i class="nav-icon fas @submenuPrimario.Icono"></i>
+                                                <p>@submenuPrimario.Nombre</p>
                                             </a>
                                         </li>
                                     }
@@ -83,14 +83,12 @@
                             </ul>
                         </li>
                     }
-                    else if (menuPrincipal.Nivel == 1 && menuPrincipal.Enlace.Length > 0)
+                    else if (menuPrincipal.Nivel == 1 && (menuPrincipal.Enlace?.Length ?? 0) > 0)
                     {
                         <li class="nav-item">
                             <a href="@menuPrincipal.Enlace" class="nav-link">
                                 <i class="nav-icon fas @menuPrincipal.Icono"></i>
-                                <p>
-                                    @menuPrincipal.Nombre
-                                </p>
+                                <p>@menuPrincipal.Nombre</p>
                             </a>
                         </li>
                     }

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferovi.Models.EF;
 
-[Table("MenuPrincipal", Schema = "Plat")]
-public partial class MenuPrincipal
+[Table("MenusPrincipales", Schema = "Plat")]
+public partial class MenusPrincipales
 {
     [Key]
     public int Id { get; set; }
@@ -30,6 +30,6 @@ public partial class MenuPrincipal
     public int? IdIcono { get; set; }
 
     [ForeignKey("IdIcono")]
-    [InverseProperty("MenuPrincipal")]
+    [InverseProperty("MenusPrincipales")]
     public virtual Iconos IdIconoNavigation { get; set; }
 }

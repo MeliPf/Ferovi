@@ -3,6 +3,8 @@ using Ferovi.Models.Repositories.Interfaces;
 using Ferovi.Models.Repositories;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.EntityFrameworkCore;
+using Ferovi.Models.Services.Interfaces;
+using Ferovi.Models.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +22,15 @@ builder.Services.AddAuthorization(options =>
 
 // Configurar el DbContext
 builder.Services.AddDbContext<FeroviContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseLazyLoadingProxies()
+           .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registrar los repositorios
-builder.Services.AddScoped<IMenuPrincipalRepository, MenuPrincipalRepository>();
+builder.Services.AddScoped<IMenusPrincipalesRepository, MenusPrincipalesRepository>();
+builder.Services.AddScoped<IUsuariosRolesRepository, UsuariosRolesRepository>();
+
+// Registrar los servicios
+builder.Services.AddScoped<IMenuPrincipalService, MenuPrincipalService>();
 
 builder.Services.AddRazorPages();
 
