@@ -1,10 +1,11 @@
 #nullable disable
 using Ferovi.Models.EF;
+using Ferovi.Models.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferovi.Models.Repositories
 {
-    public class UsuariosHistorialAccesosRepository(FeroviContext context)
+    public class UsuariosHistorialAccesosRepository(FeroviContext context) : IUsuariosHistorialAccesosRepository
     {
         private readonly FeroviContext _context = context;
 

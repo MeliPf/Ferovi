@@ -1,10 +1,11 @@
 ﻿#nullable disable
 using Ferovi.Models.EF;
+using Ferovi.Models.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferovi.Models.Repositories
 {
-    public class RolesRepository(FeroviContext context)
+    public class RolesRepository(FeroviContext context) : IRolesRepository
     {
         private readonly FeroviContext _context = context;
 
