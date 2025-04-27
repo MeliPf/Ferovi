@@ -21,7 +21,7 @@ public partial class FeroviContext : DbContext
 
     public virtual DbSet<Usuarios> Usuarios { get; set; }
 
-    public virtual DbSet<UsuariosHistorialesAccesos> UsuariosHistorialesAccesos { get; set; }
+    public virtual DbSet<UsuariosHistorialAccesos> UsuariosHistorialAccesos { get; set; }
 
     public virtual DbSet<Usuarios_Roles> Usuarios_Roles { get; set; }
 
@@ -39,13 +39,11 @@ public partial class FeroviContext : DbContext
             entity.Property(e => e.FechaCreacion).HasDefaultValueSql("(getdate())");
         });
 
-        modelBuilder.Entity<UsuariosHistorialesAccesos>(entity =>
+        modelBuilder.Entity<UsuariosHistorialAccesos>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_RegistroAcceso");
-
-            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.UsuariosHistorialesAccesos)
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.UsuariosHistorialAccesos)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_RegistroAcceso_Usuarios");
+                .HasConstraintName("FK_UsuariosHistorialAccesos_Usuarios");
         });
 
         modelBuilder.Entity<Usuarios_Roles>(entity =>

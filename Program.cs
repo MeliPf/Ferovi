@@ -30,7 +30,7 @@ builder.Services.AddScoped<IMenusPrincipalesRepository, MenusPrincipalesReposito
 builder.Services.AddScoped<IUsuariosRolesRepository, UsuariosRolesRepository>();
 
 // Registrar los servicios
-builder.Services.AddScoped<IMenuPrincipalService, MenuPrincipalService>();
+builder.Services.AddScoped<IMenuPrincipalService, PlataformaService>();
 
 builder.Services.AddRazorPages();
 

@@ -18,11 +18,6 @@ namespace Ferovi.Models.Repositories
             return await _context.Iconos.ToListAsync();
         }
 
-        public async Task<IEnumerable<Iconos>> GetAllByDatatablesFiltersAsync() // TODO: configurar con Datatables
-        {
-            return await _context.Iconos.ToListAsync();
-        }
-
         public async Task CreateAsync(Iconos menu)
         {
             _context.Iconos.Add(menu);

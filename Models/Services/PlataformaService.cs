@@ -1,12 +1,11 @@
 ﻿#nullable disable
 using AutoMapper;
 using Ferovi.Models.Repositories.Interfaces;
-using Ferovi.Models.Services.Interfaces;
 using Ferovi.Models.VM;
 
 namespace Ferovi.Models.Services
 {
-    public class MenuPrincipalService(IMenusPrincipalesRepository menusPrincipales, IMapper mapper) : IMenuPrincipalService
+    public class PlataformaService(IMenusPrincipalesRepository menusPrincipales, IMapper mapper) : IPlataformaService
     {
         private readonly IMenusPrincipalesRepository _menuPrincipalRepository = menusPrincipales;
         private readonly IMapper _mapper = mapper;
