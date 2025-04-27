@@ -1,8 +1,8 @@
 ﻿using Ferovi.Models.VM;
 
-namespace Ferovi.Models.Services.Interfaces
+namespace Ferovi.Models.Services
 {
-    public interface IMenuPrincipalService
+    public interface IPlataformaService
     {
         List<MenuPrincipalViewModel> ObtenerMenuPrincipal();
     }

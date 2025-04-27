@@ -1,10 +1,11 @@
 ﻿#nullable disable
 using Ferovi.Models.EF;
+using Ferovi.Models.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferovi.Models.Repositories
 {
-    public class UsuariosRepository(FeroviContext context)
+    public class UsuariosRepository(FeroviContext context) : IUsuariosRepository
     {
         private readonly FeroviContext _context = context;
 
@@ -18,9 +19,74 @@ namespace Ferovi.Models.Repositories
             return await _context.Usuarios.ToListAsync();
         }
 
-        public async Task<IEnumerable<Usuarios>> GetAllByDatatablesFiltersAsync() // TODO: configurar con Datatables
+        public async Task<IEnumerable<Usuarios>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue,
+                                                                                string filterUserName, string filterFirstLastName, string filterSecondLastName,
+                                                                                string filterAlias, string filterEmail, string sortColumn, string sortDirection)
         {
-            return await _context.Usuarios.ToListAsync();
+            var query = _context.Usuarios
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(filterUserName))
+            {
+                query = query.Where(ur => ur.Nombre.Contains(filterUserName));
+            }
+
+            if (!string.IsNullOrEmpty(filterFirstLastName))
+            {
+                query = query.Where(ur => ur.PrimerApellido.Contains(filterFirstLastName));
+            }
+
+            if (!string.IsNullOrEmpty(filterSecondLastName))
+            {
+                query = query.Where(ur => ur.SegundoApellido.Contains(filterSecondLastName));
+            }
+
+            if (!string.IsNullOrEmpty(filterAlias))
+            {
+                query = query.Where(ur => ur.Alias.Contains(filterAlias));
+            }
+
+            if (!string.IsNullOrEmpty(filterEmail))
+            {
+                query = query.Where(ur => ur.Email.Contains(filterEmail));
+            }
+
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                query = query.Where(ur =>
+                    ur.Nombre.Contains(searchValue) ||
+                    ur.PrimerApellido.Contains(searchValue) ||
+                    ur.SegundoApellido.Contains(searchValue) ||
+                    ur.Email.Contains(searchValue) ||
+                    ur.Alias.Contains(searchValue));
+            }
+
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+            {
+                query = sortColumn switch
+                {
+                    "Nombre" => sortDirection == "asc"
+                        ? query.OrderBy(ur => ur.Nombre)
+                        : query.OrderByDescending(ur => ur.Nombre),
+                    "PrimerApellido" => sortDirection == "asc"
+                        ? query.OrderBy(ur => ur.PrimerApellido)
+                        : query.OrderByDescending(ur => ur.PrimerApellido),
+                    "SegundoApellido" => sortDirection == "asc"
+                        ? query.OrderBy(ur => ur.SegundoApellido)
+                        : query.OrderByDescending(ur => ur.SegundoApellido),
+                    "Email" => sortDirection == "asc"
+                        ? query.OrderBy(ur => ur.Email)
+                        : query.OrderByDescending(ur => ur.Email),
+                    "Alias" => sortDirection == "asc"
+                        ? query.OrderBy(ur => ur.Alias)
+                        : query.OrderByDescending(ur => ur.Alias),
+                    _ => query
+                };
+            }
+
+            query = query.Skip(start).Take(length);
+
+            return await query.ToListAsync();
         }
 
         public async Task CreateAsync(Usuarios menu)

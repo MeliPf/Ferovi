@@ -15,6 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Automapper\" />
+    <Folder Include="Models\Services\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="efpt.config.json.user" />
   </ItemGroup>
 

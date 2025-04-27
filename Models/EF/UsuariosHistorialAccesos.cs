@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferovi.Models.EF;
 
-[Table("UsuariosHistorialesAccesos", Schema = "Plat")]
-public partial class UsuariosHistorialesAccesos
+[Table("UsuariosHistorialAccesos", Schema = "Plat")]
+public partial class UsuariosHistorialAccesos
 {
     [Key]
     public int Id { get; set; }
@@ -20,6 +20,6 @@ public partial class UsuariosHistorialesAccesos
     public DateTime FechaUltimoAcceso { get; set; }
 
     [ForeignKey("IdUsuario")]
-    [InverseProperty("UsuariosHistorialesAccesos")]
+    [InverseProperty("UsuariosHistorialAccesos")]
     public virtual Usuarios IdUsuarioNavigation { get; set; }
 }
