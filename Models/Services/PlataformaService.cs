@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using AutoMapper;
 using Ferovi.Models.Repositories.Interfaces;
+using Ferovi.Models.Services.Interfaces;
 using Ferovi.Models.VM;
 
 namespace Ferovi.Models.Services

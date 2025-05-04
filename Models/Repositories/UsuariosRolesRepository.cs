@@ -8,18 +8,19 @@ namespace Ferovi.Models.Repositories
     {
         private readonly FeroviContext _context = context;
 
-        public async Task CreateAsync(Usuarios_Roles menu)
+        public async Task CreateAsync(Usuarios_Roles usersRoles)
         {
-            _context.Usuarios_Roles.Add(menu);
+            _context.Usuarios_Roles.Add(usersRoles);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var menu = await _context.Usuarios_Roles.FindAsync(id);
-            if (menu != null)
+            Usuarios_Roles usersRoles = await _context.Usuarios_Roles.FindAsync(id);
+
+            if (usersRoles != null)
             {
-                _context.Usuarios_Roles.Remove(menu);
+                _context.Usuarios_Roles.Remove(usersRoles);
                 await _context.SaveChangesAsync();
             }
         }

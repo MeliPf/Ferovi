@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferovi.ViewComponents
 {
-    public class MainSidebarViewComponent(IMenuPrincipalService servicioMenuPrincipal) : ViewComponent
+    public class MainSidebarViewComponent(IPlataformaService servicioPlataforma) : ViewComponent
     {
-        private readonly IMenuPrincipalService _servicioMenuPrincipal = servicioMenuPrincipal;
+        private readonly IPlataformaService _servicioPlataforma = servicioPlataforma;
 
         public IViewComponentResult Invoke()
         {
-            List<MenuPrincipalViewModel> menuPrincipal = _servicioMenuPrincipal.ObtenerMenuPrincipal();
+            List<MenuPrincipalViewModel> menuPrincipal = _servicioPlataforma.ObtenerMenuPrincipal();
 
             return View(menuPrincipal);
         }

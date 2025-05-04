@@ -27,10 +27,15 @@ builder.Services.AddDbContext<FeroviContext>(options =>
 
 // Registrar los repositorios
 builder.Services.AddScoped<IMenusPrincipalesRepository, MenusPrincipalesRepository>();
+builder.Services.AddScoped<IIconosRepository, IconosRepository>();
+builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 builder.Services.AddScoped<IUsuariosRolesRepository, UsuariosRolesRepository>();
+builder.Services.AddScoped<IUsuariosHistorialAccesosRepository, UsuariosHistorialAccesosRepository>();
 
 // Registrar los servicios
-builder.Services.AddScoped<IMenuPrincipalService, PlataformaService>();
+builder.Services.AddScoped<IPlataformaService, PlataformaService>();
+builder.Services.AddScoped<IUsuariosService, UsuariosService>();
 
 builder.Services.AddRazorPages();
 

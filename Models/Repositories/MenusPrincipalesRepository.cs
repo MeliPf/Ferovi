@@ -19,9 +19,12 @@ namespace Ferovi.Models.Repositories
             return await _context.MenusPrincipales.ToListAsync();
         }
 
-        public async Task<IEnumerable<MenusPrincipales>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue, string filterName, string filterLink, int filterLevel, string sortColumn, string sortDirection)
+        public async Task<IEnumerable<MenusPrincipales>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue,
+                                                                                        string filterName, string filterLink, int filterLevel,
+                                                                                        string sortColumn, string sortDirection)
         {
-            var query = _context.MenusPrincipales.AsQueryable();
+            IQueryable<MenusPrincipales> query = _context.MenusPrincipales
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchValue))
             {
@@ -67,24 +70,25 @@ namespace Ferovi.Models.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task CreateAsync(MenusPrincipales menu)
+        public async Task CreateAsync(MenusPrincipales principalMenus)
         {
-            _context.MenusPrincipales.Add(menu);
+            _context.MenusPrincipales.Add(principalMenus);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(MenusPrincipales menu)
+        public async Task UpdateAsync(MenusPrincipales principalMenus)
         {
-            _context.MenusPrincipales.Update(menu);
+            _context.MenusPrincipales.Update(principalMenus);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var menu = await _context.MenusPrincipales.FindAsync(id);
-            if (menu != null)
+            MenusPrincipales principalMenus = await _context.MenusPrincipales.FindAsync(id);
+
+            if (principalMenus != null)
             {
-                _context.MenusPrincipales.Remove(menu);
+                _context.MenusPrincipales.Remove(principalMenus);
                 await _context.SaveChangesAsync();
             }
         }

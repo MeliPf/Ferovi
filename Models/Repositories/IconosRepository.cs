@@ -19,24 +19,25 @@ namespace Ferovi.Models.Repositories
             return await _context.Iconos.ToListAsync();
         }
 
-        public async Task CreateAsync(Iconos menu)
+        public async Task CreateAsync(Iconos icons)
         {
-            _context.Iconos.Add(menu);
+            _context.Iconos.Add(icons);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Iconos menu)
+        public async Task UpdateAsync(Iconos icons)
         {
-            _context.Iconos.Update(menu);
+            _context.Iconos.Update(icons);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var menu = await _context.Iconos.FindAsync(id);
-            if (menu != null)
+            Iconos icons = await _context.Iconos.FindAsync(id);
+
+            if (icons != null)
             {
-                _context.Iconos.Remove(menu);
+                _context.Iconos.Remove(icons);
                 await _context.SaveChangesAsync();
             }
         }

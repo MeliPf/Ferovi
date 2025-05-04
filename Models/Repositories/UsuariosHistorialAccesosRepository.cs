@@ -20,11 +20,11 @@ namespace Ferovi.Models.Repositories
         }
 
         public async Task<IEnumerable<UsuariosHistorialAccesos>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue,
-                                                                                                  string filterUserName, string filterFirstLastName, string filterSecondLastName,
-                                                                                                  string filterAlias, DateTime? filterDate, string sortColumn,
-                                                                                                  string sortDirection)
+                                                                                                string filterUserName, string filterFirstLastName, string filterSecondLastName,
+                                                                                                string filterAlias, DateTime? filterDate, string sortColumn,
+                                                                                                string sortDirection)
         {
-            var query = _context.UsuariosHistorialAccesos
+            IQueryable<UsuariosHistorialAccesos> query = _context.UsuariosHistorialAccesos
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(filterUserName))
@@ -49,7 +49,7 @@ namespace Ferovi.Models.Repositories
 
             if (filterDate != null)
             {
-                query = query.Where(ur => ur.FechaUltimoAcceso == filterDate); // TODO: verificar que no se compare segundos.
+                query = query.Where(ur => ur.FechaUltimoAcceso == filterDate); // TODO: verificar que no se compare los segundos.
             }
 
             if (!string.IsNullOrEmpty(searchValue))
@@ -93,24 +93,25 @@ namespace Ferovi.Models.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task CreateAsync(UsuariosHistorialAccesos registro)
+        public async Task CreateAsync(UsuariosHistorialAccesos usersAccessHistory)
         {
-            _context.UsuariosHistorialAccesos.Add(registro);
+            _context.UsuariosHistorialAccesos.Add(usersAccessHistory);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(UsuariosHistorialAccesos registro)
+        public async Task UpdateAsync(UsuariosHistorialAccesos usersAccessHistory)
         {
-            _context.UsuariosHistorialAccesos.Update(registro);
+            _context.UsuariosHistorialAccesos.Update(usersAccessHistory);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var registro = await _context.UsuariosHistorialAccesos.FindAsync(id);
-            if (registro != null)
+            UsuariosHistorialAccesos usersAccessHistory = await _context.UsuariosHistorialAccesos.FindAsync(id);
+
+            if (usersAccessHistory != null)
             {
-                _context.UsuariosHistorialAccesos.Remove(registro);
+                _context.UsuariosHistorialAccesos.Remove(usersAccessHistory);
                 await _context.SaveChangesAsync();
             }
         }

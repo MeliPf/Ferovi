@@ -23,7 +23,7 @@ namespace Ferovi.Models.Repositories
                                                                                 string filterUserName, string filterFirstLastName, string filterSecondLastName,
                                                                                 string filterAlias, string filterEmail, string sortColumn, string sortDirection)
         {
-            var query = _context.Usuarios
+            IQueryable<Usuarios> query = _context.Usuarios
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(filterUserName))
@@ -89,24 +89,25 @@ namespace Ferovi.Models.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task CreateAsync(Usuarios menu)
+        public async Task CreateAsync(Usuarios users)
         {
-            _context.Usuarios.Add(menu);
+            _context.Usuarios.Add(users);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Usuarios menu)
+        public async Task UpdateAsync(Usuarios users)
         {
-            _context.Usuarios.Update(menu);
+            _context.Usuarios.Update(users);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var menu = await _context.Usuarios.FindAsync(id);
-            if (menu != null)
+            Usuarios users = await _context.Usuarios.FindAsync(id);
+
+            if (users != null)
             {
-                _context.Usuarios.Remove(menu);
+                _context.Usuarios.Remove(users);
                 await _context.SaveChangesAsync();
             }
         }

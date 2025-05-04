@@ -1,126 +1,101 @@
 using AutoMapper;
 using Ferovi.Models.EF;
-using Ferovi.Models.Repositories;
 using Ferovi.Models.Repositories.Interfaces;
 using Ferovi.Models.Services.Interfaces;
 using Ferovi.Models.VM;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ferovi.Models.Services
 {
-    public class UsuariosService : IUsuariosService
+    public class UsuariosService(IUsuariosRepository usuariosRepository, IRolesRepository rolesRepository, IUsuariosRolesRepository usuariosRolesRepository,
+                                 IMapper mapper) : IUsuariosService
     {
-        private readonly IUsuariosRepository _usuariosRepository;
-        private readonly IRolesRepository _rolesRepository;
-        private readonly IUsuariosRolesRepository _usuariosRolesRepository;
-        private readonly IMapper _mapper;
-
-        public UsuariosService(IUsuariosRepository usuariosRepository, IRolesRepository rolesRepository, IUsuariosRolesRepository = usuariosRolesRepository IMapper mapper)
-        {
-            _usuariosRepository = usuariosRepository;
-            _rolesRepository = rolesRepository;
-            _usuariosRolesRepository = usuariosRolesRepository;
-            _mapper = mapper;
-        }
+        private readonly IUsuariosRepository _usuariosRepository = usuariosRepository;
+        private readonly IRolesRepository _rolesRepository = rolesRepository;
+        private readonly IUsuariosRolesRepository _usuariosRolesRepository = usuariosRolesRepository;
+        private readonly IMapper _mapper = mapper;
 
         #region USUARIOS
-        public async Task<List<UsuariosViewModel>> GetAllUsuariosAsync()
+        public async Task<List<UsuariosViewModel>> GetAllUsersAsync()
         {
-            var entities = await _usuariosRepository.GetAllAsync();
-            return _mapper.Map<List<UsuariosViewModel>>(entities);
+            IEnumerable<Usuarios> listUsers = await _usuariosRepository.GetAllAsync();
+            return _mapper.Map<List<UsuariosViewModel>>(listUsers);
         }
 
-        public async Task<UsuariosViewModel> GetUsuariosByIdAsync(int id)
+        public async Task<List<UsuariosViewModel>> GetAllByDatatablesFiltersUsuariosAsync(int start, int length, string searchValue, string filterUserName, string filterFirstLastName, string filterSecondLastName, string filterAlias, string filterEmail, string sortColumn, string sortDirection)
         {
-            var entity = await _usuariosRepository.GetByIdAsync(id);
-            return _mapper.Map<UsuariosViewModel>(entity);
+            IEnumerable<Usuarios> listUsers = await _usuariosRepository.GetAllByDatatablesFiltersAsync(start, length, searchValue, filterUserName, filterFirstLastName, filterSecondLastName, filterAlias, filterEmail, sortColumn, sortDirection);
+            return _mapper.Map<List<UsuariosViewModel>>(listUsers);
         }
 
-        public async Task CreateUsuarioAsync(UsuariosViewModel modelo)
+        public async Task<UsuariosViewModel> GetUsersByIdAsync(int id)
         {
-            var entity = _mapper.Map<Usuarios_Roles>(modelo);
-            await _usuariosRepository.CreateAsync(entity);
+            Usuarios users = await _usuariosRepository.GetByIdAsync(id);
+            return _mapper.Map<UsuariosViewModel>(users);
         }
 
-        public async Task UpdateUsuarioAsync(UsuariosViewModel modelo)
+        public async Task CreateUsersAsync(UsuariosViewModel usersViewModel)
         {
-            var entity = _mapper.Map<Usuarios_Roles>(modelo);
-            await _usuariosRepository.UpdateAsync(entity);
+            Usuarios users = _mapper.Map<Usuarios>(usersViewModel);
+            await _usuariosRepository.CreateAsync(users);
         }
 
-        public async Task DeleteUsuarioAsync(int idUsuario)
+        public async Task UpdateUsersAsync(UsuariosViewModel usersViewModel)
         {
-            var entities = await _usuariosRepository.GetAllAsync();
-            var usuarioRoles = entities.Where(x => x.IdUsuario == idUsuario);
-            foreach (var ur in usuarioRoles)
-            {
-                await _usuariosRepository.DeleteAsync(ur.Id);
-            }
+            Usuarios users = _mapper.Map<Usuarios>(usersViewModel);
+            await _usuariosRepository.UpdateAsync(users);
         }
 
-        public async Task<List<UsuariosViewModel>> GetAllByDatatablesFiltersUsuariosAsync(int start, int length, string searchValue, string filterUserName, string filterRole, string sortColumn, string sortDirection)
+        public async Task DeleteUsersAsync(int idUsuario)
         {
-            var entities = await _usuariosRepository.GetAllByDatatablesFiltersAsync(start, length, searchValue, filterUserName, filterRole, sortColumn, sortDirection);
-            return _mapper.Map<List<UsuariosViewModel>>(entities);
+            await _usuariosRepository.DeleteAsync(idUsuario);
         }
         #endregion
 
         #region ROLES
         public async Task<List<RolesViewModel>> GetAllRolesAsync()
         {
-            var entities = await _rolesRepository.GetAllAsync();
-            return _mapper.Map<List<RolesViewModel>>(entities);
+            IEnumerable<Roles> listRoles = await _rolesRepository.GetAllAsync();
+            return _mapper.Map<List<RolesViewModel>>(listRoles);
+        }
+
+        public async Task<List<RolesViewModel>> GetAllByDatatablesFilterRolessAsync(int start, int length, string searchValue, string filterCode, string filterDescription, string sortColumn, string sortDirection)
+        {
+            IEnumerable<Roles> listRoles = await _rolesRepository.GetAllByDatatablesFiltersAsync(start, length, searchValue, filterCode, filterDescription, sortColumn, sortDirection);
+            return _mapper.Map<List<RolesViewModel>>(listRoles);
         }
 
         public async Task<RolesViewModel> GetRolesByIdAsync(int id)
         {
-            var entity = await _rolesRepository.GetByIdAsync(id);
-            return _mapper.Map<RolesViewModel>(entity);
+            Roles roles = await _rolesRepository.GetByIdAsync(id);
+            return _mapper.Map<RolesViewModel>(roles);
+        }
+        public async Task CreateRolAsync(RolesViewModel rolesViewModel)
+        {
+            Roles roles = _mapper.Map<Roles>(rolesViewModel);
+            await _rolesRepository.CreateAsync(roles);
         }
 
-        public async Task CreateRolAsync(RolesViewModel modelo)
+        public async Task DeleteRolAsync(int id)
         {
-            var entity = _mapper.Map<RolesViewModel>(modelo);
-            await _rolesRepository.CreateAsync(entity);
-        }
-
-        public async Task DeleteRolAsync(int idRol)
-        {
-            // Eliminar todas las relaciones del rol
-            var entities = await _rolesRepository.GetAllAsync();
-            var rolUsuarios = entities.Where(x => x.IdRol == idRol);
-            foreach (var ru in rolUsuarios)
-            {
-                await _rolesRepository.DeleteAsync(ru.Id);
-            }
-        }
-
-        public async Task<List<RolesViewModel>> GetAllByDatatablesFilterRolessAsync(int start, int length, string searchValue, string filterUserName, string filterRole, string sortColumn, string sortDirection)
-        {
-            var entities = await _rolesRepository.GetAllByDatatablesFiltersAsync(start, length, searchValue, filterUserName, filterRole, sortColumn, sortDirection);
-            return _mapper.Map<List<RolesViewModel>>(entities);
+            await _rolesRepository.DeleteAsync(id);
         }
         #endregion
 
         #region USUARIOS_ROLES
-        public async Task AssignRolAUsuarioAsync(int idUsuario, int idRol)
+        public async Task CreateUsersRolesAsync(int idUsers, int idRoles)
         {
-            var modelo = new UsuariosViewModel
+            Usuarios_Roles usersRoles = new()
             {
-                IdUsuario = idUsuario,
-                IdRol = idRol
+                IdUsuario = idUsers,
+                IdRol = idRoles
             };
-            await CrearUsuarioAsync(modelo);
+
+            await _usuariosRolesRepository.CreateAsync(usersRoles);
         }
 
-        public async Task DeleteRolDeUsuarioAsync(int idUsuario, int idRol)
+        public async Task DeleteUsersRolesAsync(int id)
         {
-            var entities = await _usuariosRolesRepository.GetAllAsync();
-            var usuarioRol = entities.FirstOrDefault(x => x.IdUsuario == idUsuario && x.IdRol == idRol);
-            if (usuarioRol != null)
-            {
-                await _usuariosRolesRepository.DeleteAsync(usuarioRol.Id);
-            }
+            await _usuariosRolesRepository.DeleteAsync(id);
         }
         #endregion
     }

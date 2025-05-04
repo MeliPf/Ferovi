@@ -23,7 +23,7 @@ namespace Ferovi.Models.Repositories
                                                                              string filterCode, string filterDescription, string sortColumn,
                                                                              string sortDirection)
         {
-            var query = _context.Roles
+            IQueryable<Roles> query = _context.Roles
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(filterCode))
@@ -35,6 +35,7 @@ namespace Ferovi.Models.Repositories
             {
                 query = query.Where(ur => ur.Descripcion.Contains(filterDescription));
             }
+
             if (!string.IsNullOrEmpty(searchValue))
             {
                 query = query.Where(ur =>
@@ -61,24 +62,25 @@ namespace Ferovi.Models.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task CreateAsync(Roles menu)
+        public async Task CreateAsync(Roles roles)
         {
-            _context.Roles.Add(menu);
+            _context.Roles.Add(roles);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Roles menu)
+        public async Task UpdateAsync(Roles roles)
         {
-            _context.Roles.Update(menu);
+            _context.Roles.Update(roles);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var menu = await _context.Roles.FindAsync(id);
-            if (menu != null)
+            Roles roles = await _context.Roles.FindAsync(id);
+
+            if (roles != null)
             {
-                _context.Roles.Remove(menu);
+                _context.Roles.Remove(roles);
                 await _context.SaveChangesAsync();
             }
         }
