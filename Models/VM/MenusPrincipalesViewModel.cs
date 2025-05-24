@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Ferovi.Models.VM
 {
-    public class MenuPrincipalViewModel
+    public class MenusPrincipalesViewModel
     {
         public int Id { get; set; }
 
@@ -23,6 +23,6 @@ namespace Ferovi.Models.VM
 
         public int? IdMenuPadre { get; set; }
 
-        public List<MenuPrincipalViewModel> Submenu { get; set; } = [];
+        public List<MenusPrincipalesViewModel> Submenu { get; set; } = [];
     }
 }

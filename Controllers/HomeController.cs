@@ -1,6 +1,5 @@
-using System.Diagnostics;
+using Ferovi.Models.VM;
 using Microsoft.AspNetCore.Mvc;
-using Ferovi.Models;
 
 namespace Ferovi.Controllers;
 

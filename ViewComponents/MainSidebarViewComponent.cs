@@ -1,5 +1,5 @@
-﻿using Ferovi.Models.Services.Interfaces;
-using Ferovi.Models.VM;
+﻿using Ferovi.Models.VM;
+using Ferovi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferovi.ViewComponents
@@ -10,7 +10,7 @@ namespace Ferovi.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            List<MenuPrincipalViewModel> menuPrincipal = _servicioPlataforma.ObtenerMenuPrincipal();
+            List<MenusPrincipalesViewModel> menuPrincipal = _servicioPlataforma.ObtenerMenuPrincipal();
 
             return View(menuPrincipal);
         }

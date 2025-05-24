@@ -8,13 +8,13 @@ namespace Ferovi.Automapper
     {
         public MenuPrincipalProfile()
         {
-            // Mapeo de MenusPrincipales a MenuPrincipalViewModel
-            CreateMap<MenusPrincipales, MenuPrincipalViewModel>()
+            // Mapeo de MenusPrincipales a MenusPrincipalesViewModel
+            CreateMap<MenusPrincipales, MenusPrincipalesViewModel>()
                 .ForMember(dest => dest.Icono, opt => opt.MapFrom(src =>
                     src.IdIconoNavigation != null ? src.IdIconoNavigation.Class : null));
 
-            // Mapeo de MenuPrincipalViewModel a MenusPrincipales
-            CreateMap<MenuPrincipalViewModel, MenusPrincipales>();
+            // Mapeo de MenusPrincipalesViewModel a MenusPrincipales
+            CreateMap<MenusPrincipalesViewModel, MenusPrincipales>();
         }
     }
 }
