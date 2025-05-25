@@ -2,6 +2,7 @@ using Ferovi.Models.EF;
 using Ferovi.Repositories;
 using Ferovi.Repositories.Interfaces;
 using Ferovi.Services;
+using Ferovi.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.EntityFrameworkCore;
 

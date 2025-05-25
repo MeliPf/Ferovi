@@ -7,14 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferovi.Services
 {
-    public class UsuariosService(IUsuariosRepository usuariosRepository, IRolesRepository rolesRepository, IUsuariosRolesRepository usuariosRolesRepository, IMapper mapper) : IUsuariosService
+    public class UsuariosService(IBaseRepository<Usuarios> usuariosRepository, IBaseRepository<Roles> rolesRepository, IBaseRepository<UsuariosHistorialAccesos> usuariosHistorialAccesosRepository, IMapper mapper) : IUsuariosService
     {
-        public async Task<IEnumerable<Usuarios>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue,
-                                                                                string filterUserName, string filterFirstLastName, string filterSecondLastName,
-                                                                                string filterAlias, string filterEmail, string sortColumn, string sortDirection)
-        { 
-            IQueryable<Usuarios> query = _context.Usuarios
-                .AsQueryable();
+        private readonly IBaseRepository<Usuarios> _usuariosRepository = usuariosRepository;
+        private readonly IBaseRepository<Roles> _rolesRepository = rolesRepository;
+        private readonly IBaseRepository<UsuariosHistorialAccesos> _usuariosHistorialAccesosRepository = usuariosHistorialAccesosRepository;
+        private readonly IMapper _mapper = mapper;
+
+        public async Task<IEnumerable<UsuariosViewModel>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue, string filterUserName, string filterFirstLastName, string filterSecondLastName, string filterAlias, string filterEmail, string sortColumn, string sortDirection)
+        {
+            IQueryable<Usuarios> query = _usuariosRepository.Consulta();
 
             if (!string.IsNullOrEmpty(filterUserName))
             {
@@ -76,16 +78,14 @@ namespace Ferovi.Services
 
             query = query.Skip(start).Take(length);
 
-            return await query.ToListAsync();
+            List<Usuarios> listaUsuarios = await query.ToListAsync();
+
+            return _mapper.Map<List<UsuariosViewModel>>(listaUsuarios);
         }
 
-
-        public async Task<IEnumerable<Roles>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue,
-                                                                             string filterCode, string filterDescription, string sortColumn,
-                                                                             string sortDirection)
+        public async Task<IEnumerable<RolesViewModel>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue, string filterCode, string filterDescription, string sortColumn, string sortDirection)
         {
-            IQueryable<Roles> query = _context.Roles
-                .AsQueryable();
+            IQueryable<Roles> query = _rolesRepository.Consulta();
 
             if (!string.IsNullOrEmpty(filterCode))
             {
@@ -120,17 +120,14 @@ namespace Ferovi.Services
 
             query = query.Skip(start).Take(length);
 
-            return await query.ToListAsync();
+            List<Roles> listaRoles = await query.ToListAsync();
+
+            return _mapper.Map<List<RolesViewModel>>(listaRoles);
         }
 
-
-        public async Task<IEnumerable<UsuariosHistorialAccesos>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue,
-                                                                                                string filterUserName, string filterFirstLastName, string filterSecondLastName,
-                                                                                                string filterAlias, DateTime? filterDate, string sortColumn,
-                                                                                                string sortDirection)
+        public async Task<IEnumerable<UsuariosHistorialAccesosViewModel>> GetAllByDatatablesFiltersAsync(int start, int length, string searchValue, string filterUserName, string filterFirstLastName, string filterSecondLastName, string filterAlias, DateTime? filterDate, string sortColumn, string sortDirection)
         {
-            IQueryable<UsuariosHistorialAccesos> query = _context.UsuariosHistorialAccesos
-                .AsQueryable();
+            IQueryable<UsuariosHistorialAccesos> query = _usuariosHistorialAccesosRepository.Consulta();
 
             if (!string.IsNullOrEmpty(filterUserName))
             {
@@ -195,7 +192,9 @@ namespace Ferovi.Services
 
             query = query.Skip(start).Take(length);
 
-            return await query.ToListAsync();
+            List<UsuariosHistorialAccesos> listaUsuariosHistorialAccesos = await query.ToListAsync();
+
+            return _mapper.Map<List<UsuariosHistorialAccesosViewModel>>(listaUsuariosHistorialAccesos);
         }
     }
 }

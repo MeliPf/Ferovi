@@ -2,11 +2,12 @@
 using Ferovi.Models.EF;
 using Ferovi.Models.VM;
 using Ferovi.Repositories.Interfaces;
+using Ferovi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferovi.Services
 {
-    public class PlataformaService(IMapper mapper, IBaseRepository<MenusPrincipales> menusPrincipalesRepository, IBaseRepository<Iconos> IconosRepository)
+    public class PlataformaService(IMapper mapper, IBaseRepository<MenusPrincipales> menusPrincipalesRepository, IBaseRepository<Iconos> IconosRepository) : IPlataformaService
     {
         private readonly IMapper _mapper = mapper;
         private readonly IBaseRepository<MenusPrincipales> _menuPrincipalRepository = menusPrincipalesRepository;
